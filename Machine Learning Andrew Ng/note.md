@@ -67,4 +67,28 @@ p.s. 如果x是一张猫猫图片，y则是这张图片有多大的概率是猫�
 
 #### 2.3 Logistic Regression cost function
 
+Loss(error) function:（单个训练结果）用来衡量y hat和实际的y到底由多接近  
+
+Cost function:（整体训练结果）用来衡量w和b在整体training set上的结果
+
 ![Clipboard_Screenshot_1738917122](assets/Clipboard_Screenshot_1738917122.png)
+
+#### 2.4 Gradient Descent
+
+Want to find w,b that minimize J(w,b) <- COST FUNCTION
+
+https://www.cnblogs.com/shizyxya/p/16425947.html
+
+![image-20250207191924972](assets/image-20250207191924972.png)
+
+![image-20250207192750223](assets/image-20250207192750223.png)
+
+#### 2.5 Derivatives
+
+  导数 = 斜率![image-20250207194703925](assets/image-20250207194703925.png)
+
+#### 2.6 More Derivatives Examples
+
+![image-20250207195203432](assets/image-20250207195203432.png)
+
+![image-20250207195912501](assets/image-20250207195912501.png)
