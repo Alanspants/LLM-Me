@@ -64,3 +64,7 @@ sigmoid函数：通过sigmoid函数的框定，将一个线性函数的输出值
 p.s. 如果x是一张猫猫图片，y则是这张图片有多大的概率是猫猫图片
 
 ![image-20250206204038954](assets/image-20250206204038954.png)
+
+#### 2.3 Logistic Regression cost function
+
+![Clipboard_Screenshot_1738917122](assets/Clipboard_Screenshot_1738917122.png)
