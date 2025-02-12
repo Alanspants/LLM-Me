@@ -92,3 +92,17 @@ https://www.cnblogs.com/shizyxya/p/16425947.html
 ![image-20250207195203432](assets/image-20250207195203432.png)
 
 ![image-20250207195912501](assets/image-20250207195912501.png)
+
+#### 2.7 Computation Graph？（流程图）
+
+正向运算
+
+![image-20250212181707148](assets/image-20250212181707148.png)
+
+#### 2.8 Derivatives with a Computation Graph
+
+流程图的求导 -> 反向运算
+
+![image-20250212182803617](assets/image-20250212182803617.png)
+
+![Clipboard_Screenshot_1739356475](assets/Clipboard_Screenshot_1739356475.png)
