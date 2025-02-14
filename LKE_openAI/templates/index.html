@@ -180,6 +180,7 @@
 </svg>
 
 <main>
+  
   <h1 class="visually-hidden">Headers examples</h1>
 
   <div class="container">
@@ -195,15 +196,37 @@
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
         <!-- <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
         <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li> -->
       </ul>
     </header>
 
     <div>
       <label for="formFileLg" class="form-label">工单导出表格上传(.csv)</label>
-      <input class="form-control form-control-lg" id="formFileLg" type="file" accept="text/csv">
+      <!-- <form action="" method="post" id="fileInputForm">
+        <input name="myFileUpload" class="form-control form-control-lg" id="formFileLg" type="file" accept="text/csv" action="{{ url_for('index') }}">
+        <br/>
+      </form> -->
+      
+      <form method="POST" action="" enctype="multipart/form-data">
+        <p><input class="form-control form-control-lg" type="file" name="file" accept="text/csv"></p>
+        <p><button class="btn btn-primary" type="submit">Primary action</button></p>
+      </form>
+
+      <!-- <h1>File Upload2</h1>
+      <form method="POST" action="" enctype="multipart/form-data">
+        <p><input type="file" name="file"></p>
+        <p><input type="submit" value="Submit"></p>
+      </form>
+       -->
+      <!-- <script>
+        document.getElementById("formFileLg").onchange = function(){
+          alert("change!!!")
+        }
+      </script> -->
     </div>
+
+      
+  </form>
 
     <br/>
     <br/>
@@ -221,7 +244,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr>
             <td>651002</td>
             <td>emr，emr-rm1ps9ou状态不正常，一共6个core节点，只识别了3台，确认原因</td>
             <td>nm节点数据盘使用率太高，判定为不健康</td>
@@ -268,7 +291,7 @@
             <td>emr，emr-hu2izag9实例自动弹出的集群没有标签，影响使用</td>
             <td>bidding-emergency这个伸缩规则的扩容没有配置标签</td>
             <td>配置相关规则的标签即可</td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -637,7 +660,7 @@
 
   <div class="b-example-divider"></div> -->
 </main>
-
+<script src="{{ url_for('static', filename='module/module.js') }}"></script>
 <!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
 <script src="{{ url_for('static', filename='assets/dist/js/bootstrap.bundle.min.js')}}"></script>
     </body>
