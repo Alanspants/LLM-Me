@@ -1,6 +1,9 @@
+import os.path
+
 from flask import Flask, request, render_template, session, redirect, jsonify
 
 app = Flask(__name__)
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # <form action="" method="post" id='myForm'>
 #     <button name="button" value="value">Send</button>
@@ -31,7 +34,16 @@ app = Flask(__name__)
 
 @app.route("/index", methods=['GET', 'POST'])
 def index():
-    print(request.files)
+    print(list(request.files))
+    if len(list(request.files)) != 0:
+        file = request.files['file']
+        file_list = list(request.files.values())
+        file_name = file_list[0].filename
+
+        target = os.path.join(APP_ROOT, "datasource/")
+        destination = '/'.join([target, file_name])
+        file.save(destination)
+
     return render_template('index.html')
 
 
