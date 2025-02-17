@@ -209,7 +209,7 @@
       
       <form method="POST" action="" enctype="multipart/form-data">
         <p><input class="form-control form-control-lg" type="file" name="file" accept="text/csv"></p>
-        <p><button name="file-upload-button" class="btn btn-primary" type="submit">Upload</button></p>
+        <p><button id="file-upload-button1" name="file-upload-button" class="btn btn-primary" type="submit" onclick="csvResolve()">Upload</button></p>
       </form>
 
       <!-- <h1>File Upload2</h1>
@@ -234,6 +234,18 @@
 
     <h2>工单列表</h2>
     <h2>{{ file_name }}</h2>
+    <!-- <h2>{{ json_data }}</h2> -->
+
+    <script>
+      const jsonString = '{{ json_data|tojson|safe }}'
+      console.log(jsonString)
+      console.log(typeof(jsonString))
+      const jsonData = JSON.parse(jsonString)
+      console.log(jsonData['工单id'])
+      console.log(typeof(jsonData))
+    </script>
+
+
     <div class="table-responsive small">
       <table class="table table-striped">
         <thead>

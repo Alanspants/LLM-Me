@@ -56,16 +56,23 @@ def index():
 
             with open(csv_file_path, encoding='utf-8') as csvf:
                 csv_reader = csv.DictReader(csvf)
-                i = 0
-                for rows in csv_reader:
-                    data[i] = rows
-                    i += 1
-            with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-                jsonf.write(json.dumps(data, indent=1, ensure_ascii=False))
+                data = list(csv_reader)
+                # i = 0
+                # for rows in csv_reader:
+                #     print(rows)
+                #     data[i] = rows
+                #     i += 1
 
-            return render_template('index.html', file_name=file_name), 200
+            json_data = json.dumps(data, ensure_ascii=False)
 
-    return render_template('index.html')
+            print(json_data)
+
+            # with open(json_file_path, 'w', encoding='utf-8') as jsonf:
+            #     jsonf.write(json.dumps(data, indent=1, ensure_ascii=False))
+
+            return render_template('index.html', file_name=file_name, json_data=json_data), 200
+
+    return render_template('index.html', json_data="")
 
 
 if __name__ == "__main__":

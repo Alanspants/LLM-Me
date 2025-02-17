@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="./assets/js/color-modes.js"></script>
+  <!-- <head><script src="../assets/js/color-modes.js"></script> -->
+  <head><script src="{{ url_for('static', filename='assets/js/color-modes.js')}}"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +16,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-<link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<link href="{{ url_for('static', filename='assets/dist/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -98,7 +100,7 @@
 
     
     <!-- Custom styles for this template -->
-    <link href="headers.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/dist/css/headers.css')}}" rel="stylesheet">
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -178,13 +180,15 @@
 </svg>
 
 <main>
+  
   <h1 class="visually-hidden">Headers examples</h1>
 
   <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <!-- <svg class="bi me-2" width="40" height="32"><use xlink:href="../source/tencentCloudSVG.jpg"/></svg> -->
-        <img class="bi me-2" width="40" height="32" src="./source/tencentCloud.png">
+        <!-- <img class="bi me-2" width="40" height="32" src="../source/tencentCloud.png"> -->
+        <img class="bi me-2" width="40" height="32" src="{{ url_for('static', filename='source/tencentCloud.png')}}">
         <span class="fs-4">工单共性分析 powered by LKE</span>
       </a>
 
@@ -192,21 +196,44 @@
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
         <!-- <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
         <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li> -->
       </ul>
     </header>
 
     <div>
       <label for="formFileLg" class="form-label">工单导出表格上传(.csv)</label>
-      <input class="form-control form-control-lg" id="formFileLg" type="file" accept="text/csv">
+      <!-- <form action="" method="post" id="fileInputForm">
+        <input name="myFileUpload" class="form-control form-control-lg" id="formFileLg" type="file" accept="text/csv" action="{{ url_for('index') }}">
+        <br/>
+      </form> -->
+      
+      <form method="POST" action="" enctype="multipart/form-data">
+        <p><input class="form-control form-control-lg" type="file" name="file" accept="text/csv"></p>
+        <p><button id="file-upload-button1" name="file-upload-button" class="btn btn-primary" type="submit" onclick="csvResolve()">Upload</button></p>
+      </form>
+
+      <!-- <h1>File Upload2</h1>
+      <form method="POST" action="" enctype="multipart/form-data">
+        <p><input type="file" name="file"></p>
+        <p><input type="submit" value="Submit"></p>
+      </form>
+       -->
+      <!-- <script>
+        document.getElementById("formFileLg").onchange = function(){
+          alert("change!!!")
+        }
+      </script> -->
     </div>
+
+      
+  </form>
 
     <br/>
     <br/>
     <br/>
 
     <h2>工单列表</h2>
+    <h2>{{ file_name }}</h2>
     <div class="table-responsive small">
       <table class="table table-striped">
         <thead>
@@ -218,7 +245,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- <tr>
             <td>651002</td>
             <td>emr，emr-rm1ps9ou状态不正常，一共6个core节点，只识别了3台，确认原因</td>
             <td>nm节点数据盘使用率太高，判定为不健康</td>
@@ -265,7 +292,7 @@
             <td>emr，emr-hu2izag9实例自动弹出的集群没有标签，影响使用</td>
             <td>bidding-emergency这个伸缩规则的扩容没有配置标签</td>
             <td>配置相关规则的标签即可</td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -381,7 +408,8 @@
             </tbody>
           </table>
         </div>
-      <a class="btn btn-lg btn-primary" href="/docs/5.3/components/navbar/" role="button">反馈</a>
+      <!-- <a class="btn btn-lg btn-primary" href="/docs/5.3/components/navbar/" role="button">反馈</a> -->
+      <a class="btn btn-lg btn-primary" href="{ url_for('static', filename='/docs/5.3/components/navbar/')}" role="button">反馈</a>
     </div>
 
   </div>
@@ -633,7 +661,8 @@
 
   <div class="b-example-divider"></div> -->
 </main>
-<script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="{{ url_for('static', filename='module/module.js') }}"></script>
+<!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
+<script src="{{ url_for('static', filename='assets/dist/js/bootstrap.bundle.min.js')}}"></script>
     </body>
 </html>
