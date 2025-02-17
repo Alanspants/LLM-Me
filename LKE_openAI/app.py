@@ -51,26 +51,18 @@ def index():
             file.save(destination)
 
             csv_file_path = destination
-            json_file_path = destination[:-len(".csv")] + ".txt"
-            data = {}
 
-            with open(csv_file_path, encoding='utf-8') as csvf:
+            data = []
+            with open(csv_file_path, encoding='utf_8_sig') as csvf:
                 csv_reader = csv.DictReader(csvf)
-                data = list(csv_reader)
-                # i = 0
-                # for rows in csv_reader:
-                #     print(rows)
-                #     data[i] = rows
-                #     i += 1
+                for row in csv_reader:
+                    data.append(row)
 
-            json_data = json.dumps(data, ensure_ascii=False)
+            json_data = json.dumps(data, indent=4, ensure_ascii=False)
+            print(type(json_data))
+            print(type(data))
 
-            print(json_data)
-
-            # with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-            #     jsonf.write(json.dumps(data, indent=1, ensure_ascii=False))
-
-            return render_template('index.html', file_name=file_name, json_data=json_data), 200
+            return render_template('index.html', file_name=file_name, json_data=data), 200
 
     return render_template('index.html', json_data="")
 

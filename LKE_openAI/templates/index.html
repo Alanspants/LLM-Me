@@ -208,7 +208,17 @@
       </form> -->
       
       <form method="POST" action="" enctype="multipart/form-data">
-        <p><input class="form-control form-control-lg" type="file" name="file" accept="text/csv"></p>
+        <p>
+          <input id="file-input" class="form-control form-control-lg" type="file" name="file" accept="text/csv">
+        </p>
+        <!-- <script>
+          file_name = '{{ file_name }}'
+          console.log(file_name)
+          if (file_name.length > 0) {
+            // Placeholder="Click toupload file"
+            document.getElementById("file-input").setAttribute("placeholder",file_name)
+          }
+        </script> -->
         <p><button id="file-upload-button1" name="file-upload-button" class="btn btn-primary" type="submit" onclick="csvResolve()">Upload</button></p>
       </form>
 
@@ -233,20 +243,11 @@
     <br/>
 
     <h2>工单列表</h2>
-    <h2>{{ file_name }}</h2>
+    <h3>[{{ file_name }}]</h3>
     <!-- <h2>{{ json_data }}</h2> -->
 
-    <script>
-      const jsonString = '{{ json_data|tojson|safe }}'
-      console.log(jsonString)
-      console.log(typeof(jsonString))
-      const jsonData = JSON.parse(jsonString)
-      console.log(jsonData['工单id'])
-      console.log(typeof(jsonData))
-    </script>
 
-
-    <div class="table-responsive small">
+    <div id="table-container" class="table-responsive small">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -257,57 +258,34 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-            <td>651002</td>
-            <td>emr，emr-rm1ps9ou状态不正常，一共6个core节点，只识别了3台，确认原因</td>
-            <td>nm节点数据盘使用率太高，判定为不健康</td>
-            <td>需要客户清理下hdfs数据或扩容core节点，再做均衡操作</td>
-          </tr>
-          <tr>
-            <td>651003</td>
-            <td>emr，emr-rd7hedd9，appadmin用户无法执行crontab -e，影响使用</td>
-            <td>用户密码过期导致</td>
-            <td>用户密码过期\ncat \/var\/log\/secure 可以看到密码过期的提示\n修改密码，然后执行\nchage –M -1 用户名 设定用户密码永不过期\n</td>
-          </tr>
-          <tr>
-            <td>651004</td>
-            <td>emr，emr-ne39659f 时间伸缩扩容失败，影响使用</td>
-            <td>扩容机型规格SA5.8XLARGE128，对应时间点资源不足，之前长期预扣的是SA5.8XLARGE64</td>
-            <td>已临时预扣SA5.8XLARGE128资源，已联系架构师后续提长期预留单</td>
-          </tr>
-          <tr>
-            <td>651005</td>
-            <td>emr，emr-m54k7ybv，任务卡住，需要协助处理</td>
-            <td>集群本来就没这个目录\/usr\/bin\/bash导致报错</td>
-            <td>后台已处理相关的重启流程，重启成功</td>
-          </tr>
-          <tr>
-            <td>651006</td>
-            <td>emr，emr-m54k7ybv，datanode节点显示存在异常，影响使用</td>
-            <td>内存不足导致</td>
-            <td>内存不足，需要改堆内存参数。改为4G 或者 8G，如果是生产环境，建议改为8G，改完后下发配置，然后重启所有datanode</td>
-          </tr>
-          <tr>
-            <td>651007</td>
-            <td>emr，emr-jmonmin5节点缩容进程异常影响使用核实原因</td>
-            <td>核实1个块一直不结束导致流程异常</td>
-            <td>已协助跳过流程，手动下线节点</td>
-          </tr>
-          <tr>
-            <td>651008</td>
-            <td>emr，emr-jcymgiew，节点连接异常，需要确认下</td>
-            <td>机器内存不足导致机器挂了</td>
-            <td>建议Master 建议升到64G</td>
-          </tr>
-          <tr>
-            <td>651009</td>
-            <td>emr，emr-hu2izag9实例自动弹出的集群没有标签，影响使用</td>
-            <td>bidding-emergency这个伸缩规则的扩容没有配置标签</td>
-            <td>配置相关规则的标签即可</td>
-          </tr> -->
         </tbody>
       </table>
     </div>
+
+    <script>
+      const jsonString = '{{ json_data|tojson|safe }}'
+      console.log(jsonString)
+
+      const jsonData = JSON.parse(jsonString)
+      console.log(jsonData)
+
+      let headers = Object.keys(jsonData[0]);
+      let table = '<table class="table table-striped"><thead><tr>';
+
+      headers.forEach(header => table += `<th>${header}</th>`);
+      table += '</tr></thead><tbody>';
+
+      jsonData.forEach(row => {
+        table += '<tr>';
+        headers.forEach(header => table += `<td>${row[header]}</td>`);
+        table += '</tr>';
+      });
+
+      table += '</tbody></table>';
+      console.log(table)
+
+      document.getElementById('table-container').innerHTML = table;
+    </script>
 
     <br/>
     <br/>
