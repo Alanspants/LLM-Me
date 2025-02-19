@@ -200,6 +200,7 @@
       </ul>
     </header>
 
+    <h2>1. 工单上传</h2>
     <div>
       <label for="formFileLg" class="form-label">工单导出表格上传(.csv)</label>
       <!-- <form action="" method="post" id="fileInputForm">
@@ -219,7 +220,7 @@
             document.getElementById("file-input").setAttribute("placeholder",file_name)
           }
         </script> -->
-        <p><button id="file-upload-button1" name="file-upload-button" class="btn btn-primary" type="submit" onclick="csvResolve()">Upload</button></p>
+        <p><button id="file-upload-button1" name="file-upload-button" class="btn btn-primary" type="submit" onclick="csvResolve()">上传</button></p>
       </form>
 
       <!-- <h1>File Upload2</h1>
@@ -235,15 +236,13 @@
       </script> -->
     </div>
 
-      
-  </form>
 
     <br/>
     <br/>
     <br/>
 
-    <h2>工单列表</h2>
-    <h3>[{{ file_name }}]</h3>
+    <h2>2. 工单列表</h2>
+    <h3>{{ file_name }}</h3>
     <!-- <h2>{{ json_data }}</h2> -->
 
 
@@ -291,9 +290,11 @@
     <br/>
     <br/>
 
-    <h2>智能分析</h2>
+
+    <form method="POST" action="">
+    <h2>3. 智能分析</h2>
     <br/>
-    <label for="formFileLg" class="form-label">模型选择</label>
+    <label for="formFileLg" class="form-label"><b>step1：模型选择</b></label>
     <div class="d-flex gap-2">
       <button class="btn btn-primary d-inline-flex" type="button">
         DeepSeek-R1-671b
@@ -320,9 +321,15 @@
       </button>
     </div>
 
+
+    <br/>
+    <label for="formFileLg" class="form-label"><b>step2：分析控制</b></label>
+    <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit">开始分析</button></p>
+    </form>
+
     <br/>
 
-    <label for="formFileLg" class="form-label">分析结论</label>
+    <label for="formFileLg" class="form-label"><b>step3：分析结论</b></label>
     <div class="bg-body-tertiary p-5 rounded">
       <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1>
       <p class="lead" style="white-space: pre-line;">
