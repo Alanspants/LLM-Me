@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <!-- <head><script src="../assets/js/color-modes.js"></script> -->
-  <head><script src="{{ url_for('static', filename='assets/js/color-modes.js')}}"></script>
+  <head>
+    <script src="{{ url_for('static', filename='assets/js/color-modes.js')}}"></script>
+
+    <script src="https://unpkg.com/htmx.org@1.8.6"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -327,10 +331,12 @@
     <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit">开始分析</button></p>
     </form>
 
+    <!-- <p><button id="analysis-button222" name="analysis-button" class="btn btn-primary" type="submit" onclick="startSSE()">开始分析</button></p> -->
+
     <br/>
 
     <label for="formFileLg" class="form-label"><b>step3：分析结论</b></label>
-    <div class="bg-body-tertiary p-5 rounded">
+    <div id="sse-box" class="bg-body-tertiary p-5 rounded">
       <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1>
       <!-- <p class="lead" style="white-space: pre-line;">
 
@@ -405,12 +411,28 @@
             </tbody>
           </table>
         </div> -->
-        <div hx-ext="sse" sse-connect="/connect" sse-swap="message">
-          Contents of this box will be updated in real time
-          with every SSE message received from the chatroom.
-      </div>
-      <a class="btn btn-lg btn-primary" href="{ url_for('static', filename='/docs/5.3/components/navbar/')}" role="button">反馈</a>
     </div>
+
+    <!-- <script>
+      function startSSE(){
+
+        // <div id="sse-box" hx-ext="sse" sse-swap="message">
+        //   Contents of this box will be updated in real time
+        //   with every SSE message received from the chatroom.
+        // </div>
+
+        console.log("sse triggered")
+
+        var sseElement = document.createElement("div")
+        sseElement.setAttribute("sse-connect","/connect")
+        sseElement.setAttribute("hx-ext","sse")
+        sseElement.setAttribute("sse-swap","message")
+        sseElement.innerHTML="哈哈哈"
+        
+        document.getElementById("sse-box").appendChild(sseElement)
+
+      }
+    </script> -->
 
   </div>
 

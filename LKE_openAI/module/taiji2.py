@@ -10,6 +10,7 @@ import sseclient
 # 服务组：Hunyuan-T1-32K
 # WSID：10697
 # Authorization：Bearer 7auGXNATFSKl7dF
+from flask import Response
 
 ss_url = "http://stream-server-online-openapi.turbotke.production.polaris:8080/openapi/chat/completions"
 model = "Hunyuan-T1-32K"
@@ -51,8 +52,11 @@ def hunyuan(content):
             if event.data != '':
                 data_js = json.loads(event.data)
                 try:
+                    data_input = data_js['choices'][0]['delta']['content']
+                    # print(data_input, end='', flush=True)
                     print(data_js['choices'][0]['delta']['content'], end='', flush=True)
                 except Exception as e:
                     print(data_js)
     else:
         print(resp.json())
+

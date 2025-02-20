@@ -1,8 +1,13 @@
 import csv
+import itertools
 import json
 import os.path
+import time
+import uuid
 
-from flask import Flask, request, render_template, redirect, jsonify, url_for
+import requests
+import sseclient
+from flask import Flask, request, render_template, redirect, jsonify, url_for, Response
 import session
 from module.ticketParse import ticket_parse
 from example_sse_coco import call_sse_api
@@ -41,6 +46,26 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 data = []
 json_data = ""
 file_name = ""
+json_prompt = ""
+LLM_output = ""
+
+
+ss_url = "http://stream-server-online-openapi.turbotke.production.polaris:8080/openapi/chat/completions"
+model = "Hunyuan-T1-32K"
+wsid = "10697"
+enable_stream = True
+
+headers = {
+    "Content-Type": "application/json",
+    # "Authorization": "0c370ac1-ba61-4b86-940a-f0ea8c05c680",
+    "Authorization": "Bearer 7auGXNATFSKl7dF",
+    "Wsid": wsid,
+}
+
+
+def modify_LLM_output(modify_str):
+    global LLM_output
+    LLM_output = modify_str
 
 
 @app.route("/index", methods=['GET', 'POST'])
@@ -48,6 +73,7 @@ def index():
     global json_data
     global file_name
     global data
+    global json_prompt
 
     if request.method == 'POST':
         # file upload
@@ -55,28 +81,6 @@ def index():
         print(request.form.keys())
 
         if list(request.form.keys())[0] == 'file-upload-button' and len(list(request.files)):
-
-            # json_data = None
-            # file_name = None
-            # data = []
-            #
-            # file = request.files['file']
-            # file_list = list(request.files.values())
-            # file_name = file_list[0].filename
-            # print("file: " + str(file) + "\nfile_list: " + str(file_list) + "\nfile_name: " + str(file_name))
-            #
-            # target = os.path.join(APP_ROOT, "datasource/")
-            # destination = '/'.join([target, file_name])
-            # file.save(destination)
-            #
-            # csv_file_path = destination
-            #
-            # with open(csv_file_path, encoding='utf_8_sig') as csvf:
-            #     csv_reader = csv.DictReader(csvf)
-            #     for row in csv_reader:
-            #         data.append(row)
-            #
-            # json_data = json.dumps(data, indent=4, ensure_ascii=False)
 
             json_data, file_name, data = ticket_parse(APP_ROOT, request)
 
@@ -105,6 +109,8 @@ def index():
             return render_template('index.html', file_name=file_name, json_data=data), 200
 
     return render_template('index.html', json_data="")
+
+
 
 
 if __name__ == "__main__":
