@@ -189,7 +189,7 @@
         <!-- <svg class="bi me-2" width="40" height="32"><use xlink:href="../source/tencentCloudSVG.jpg"/></svg> -->
         <!-- <img class="bi me-2" width="40" height="32" src="../source/tencentCloud.png"> -->
         <img class="bi me-2" width="40" height="32" src="{{ url_for('static', filename='source/tencentCloud.png')}}">
-        <span class="fs-4">工单共性分析 powered by LKE</span>
+        <span class="fs-4">工单共性分析 powered by alannchen</span>
       </a>
 
       <ul class="nav nav-pills">
@@ -332,7 +332,7 @@
     <label for="formFileLg" class="form-label"><b>step3：分析结论</b></label>
     <div class="bg-body-tertiary p-5 rounded">
       <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1>
-      <p class="lead" style="white-space: pre-line;">
+      <!-- <p class="lead" style="white-space: pre-line;">
 
         共性问题1：资源不足导致的扩容/缩容失败  
         
@@ -404,8 +404,11 @@
               </tr>
             </tbody>
           </table>
-        </div>
-      <!-- <a class="btn btn-lg btn-primary" href="/docs/5.3/components/navbar/" role="button">反馈</a> -->
+        </div> -->
+        <div hx-ext="sse" sse-connect="/connect" sse-swap="message">
+          Contents of this box will be updated in real time
+          with every SSE message received from the chatroom.
+      </div>
       <a class="btn btn-lg btn-primary" href="{ url_for('static', filename='/docs/5.3/components/navbar/')}" role="button">反馈</a>
     </div>
 

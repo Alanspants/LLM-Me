@@ -1,0 +1,11 @@
+<!DOCTYPE html5>
+<head>
+    <script src="https://unpkg.com/htmx.org@1.8.6"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+</head>
+<body>
+    <p>Here.</p>
+    <button hx-post="/start-connection" hx-swap="outerHTML">Connect</button>
+    <button hx-post="/pong" hx-swap="outerHTML">Pong</button>
+</body>
+
