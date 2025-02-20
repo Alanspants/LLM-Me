@@ -49,7 +49,6 @@ file_name = ""
 json_prompt = ""
 LLM_output = ""
 
-
 ss_url = "http://stream-server-online-openapi.turbotke.production.polaris:8080/openapi/chat/completions"
 model = "Hunyuan-T1-32K"
 wsid = "10697"
@@ -61,11 +60,6 @@ headers = {
     "Authorization": "Bearer 7auGXNATFSKl7dF",
     "Wsid": wsid,
 }
-
-
-def modify_LLM_output(modify_str):
-    global LLM_output
-    LLM_output = modify_str
 
 
 @app.route("/index", methods=['GET', 'POST'])
@@ -104,13 +98,18 @@ def index():
             # json_prompt = origin_prompt
             print("json_prompt:\n" + json_prompt)
 
-            hunyuan(json_prompt)
+            # hunyuan(json_prompt)
 
             return render_template('index.html', file_name=file_name, json_data=data), 200
 
     return render_template('index.html', json_data="")
 
 
+@app.route('/stream')
+def stream():
+    if json_prompt != "":
+        return Response(hunyuan(json_prompt), mimetype="text/event-stream")
+    return render_template('index.html', file_name=file_name, json_data=data), 200
 
 
 if __name__ == "__main__":

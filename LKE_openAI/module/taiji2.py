@@ -24,8 +24,10 @@ headers = {
     "Wsid": wsid,
 }
 
+output = ""
 
 def hunyuan(content):
+    global output
     json_data = {
         "model": model,
         "query_id": "test_query_id_" + str(uuid.uuid4()),
@@ -52,9 +54,16 @@ def hunyuan(content):
             if event.data != '':
                 data_js = json.loads(event.data)
                 try:
-                    data_input = data_js['choices'][0]['delta']['content']
-                    # print(data_input, end='', flush=True)
-                    print(data_js['choices'][0]['delta']['content'], end='', flush=True)
+                    output = repr(data_js['choices'][0]['delta']['content'])
+                    # output = str("test")
+                    print(type(output))
+                    # print(output, end='', flush=True)
+                    # print(data_js['choices'][0]['delta']['content'], end='', flush=True)
+                    # print(output)
+                    # yield f"data:{output}\n"
+                    print("=======")
+                    print(repr(output))
+                    yield f"data: {output}\n\n"
                 except Exception as e:
                     print(data_js)
     else:

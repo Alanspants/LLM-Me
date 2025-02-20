@@ -3,9 +3,15 @@
   <!-- <head><script src="../assets/js/color-modes.js"></script> -->
   <head>
     <script src="{{ url_for('static', filename='assets/js/color-modes.js')}}"></script>
+    <script src="{{ url_for('static', filename='assets/js/easy-markdown.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/js/easy-markdown.min.css')}}">
 
     <script src="https://unpkg.com/htmx.org@1.8.6"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown-light.min.css"> -->
+
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +21,6 @@
     <title>Headers · Bootstrap v5.3</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
-
-    
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -100,6 +104,15 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
+      @media (max-width: 767px) { body { padding: 15px; } }
+      body { box-sizing: border-box;
+       min-width: 200px;
+       max-width: 980px;
+       margin: 0 auto;
+       padding: 45px; 
+      }
+
     </style>
 
     
@@ -338,6 +351,52 @@
     <label for="formFileLg" class="form-label"><b>step3：分析结论</b></label>
     <div id="sse-box" class="bg-body-tertiary p-5 rounded">
       <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1>
+
+      <div id="output"></div>
+      <div id="output-hidden" hidden></div>
+
+      <!-- <textarea id="mark"></textarea>
+      <div id="preview"></div> -->
+
+      <script>
+
+        // window.onload = function () {
+        //     var markdown = new Reader("mark");
+        //     //获取原始文本
+        //     markdown.reader;
+        //     //获取转义后的原始文本
+        //     markdown.readerTransfer;
+        //     //以数组形式获得所有文本
+        //     markdown.getHtml();
+        //     //渲染文本到页面元素
+        //     markdown.showHtml("preview");
+        //     //获取指定行文本(示例为第0行)
+        //     markdown.getLineText(0);
+        //     //获取编辑器分组后的原始文本
+        //     markdown.getLines();
+        // };
+
+        // 使用 EventSource 连接 SSE 事件流
+        const eventSource = new EventSource("/stream");
+
+        // 每当接收到新数据时，更新页面内容
+        eventSource.onmessage = function(event) {
+          console.log("========")
+          let output = event.data.slice(1, -1).replaceAll('\n','<br>');
+          let outputDiv = document.getElementById("output");
+          // let outputDivHidden = document.getElementById("output-hidden")
+          let outputDivInner = outputDiv.innerHTML
+          console.log("========")
+          console.log("output: " + output)
+          console.log("outputDivInner: " + outputDivInner)
+          
+          outputDiv.innerHTML = outputDivInner + output
+          // outputDiv.innerHTML = (outputDivHidden.innerHTML.concat(output)).replaceAll('\n','<br>')
+          // outputDivHidden.innerHTML = outputDivHidden.innerHTML.concat(output);
+          // outputDiv.innerHTML = outputDivInner.concat(output);
+        };
+
+      </script>
       <!-- <p class="lead" style="white-space: pre-line;">
 
         共性问题1：资源不足导致的扩容/缩容失败  
