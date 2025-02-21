@@ -19,12 +19,22 @@ enable_stream = True
 
 headers = {
     "Content-Type": "application/json",
-    # "Authorization": "0c370ac1-ba61-4b86-940a-f0ea8c05c680",
-    "Authorization": "Bearer 7auGXNATFSKl7dF",
+    "Authorization": "0c370ac1-ba61-4b86-940a-f0ea8c05c680",
+    # "Authorization": "Bearer 7auGXNATFSKl7dF",
     "Wsid": wsid,
 }
 
 output = ""
+
+flag = True
+
+
+def moodifyflag(target):
+    global flag
+    flag = target
+
+def checkflag():
+    return flag
 
 def hunyuan(content):
     global output
@@ -48,6 +58,10 @@ def hunyuan(content):
     resp = requests.post(ss_url, headers=headers, json=json_data, stream=True)
 
     print('Output:')
+
+    # yield f"data: {'#### 一、共性问题分类及分析'}\n\n"
+
+
     if enable_stream:
         client = sseclient.SSEClient(resp)
         for event in client.events():
@@ -56,16 +70,15 @@ def hunyuan(content):
                 try:
                     output = repr(data_js['choices'][0]['delta']['content'])
                     # output = str("test")
-                    print(type(output))
                     # print(output, end='', flush=True)
-                    # print(data_js['choices'][0]['delta']['content'], end='', flush=True)
+                    print(data_js['choices'][0]['delta']['content'], end='', flush=True)
                     # print(output)
                     # yield f"data:{output}\n"
-                    print("=======")
-                    print(repr(output))
                     yield f"data: {output}\n\n"
                 except Exception as e:
                     print(data_js)
     else:
         print(resp.json())
+
+    moodifyflag(False)
 

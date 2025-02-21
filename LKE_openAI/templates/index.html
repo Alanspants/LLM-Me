@@ -105,14 +105,6 @@
         display: block !important;
       }
 
-      @media (max-width: 767px) { body { padding: 15px; } }
-      body { box-sizing: border-box;
-       min-width: 200px;
-       max-width: 980px;
-       margin: 0 auto;
-       padding: 45px; 
-      }
-
     </style>
 
     
@@ -350,16 +342,22 @@
 
     <label for="formFileLg" class="form-label"><b>step3：分析结论</b></label>
     <div id="sse-box" class="bg-body-tertiary p-5 rounded">
-      <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1>
+      <!-- <h1>腾讯云EMR工单共性问题分析报告（2025年至今）</h1> -->
 
       <div id="output"></div>
+      <div id="output1">
+      </div>
       <div id="output-hidden" hidden></div>
 
       <!-- <textarea id="mark"></textarea>
       <div id="preview"></div> -->
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+      <script>
+        document.getElementById("output").innerHTML = marked.parse('# Marked in browser\n\nRendered by **marked**.')
+        document.getElementById("output1").innerHTML = marked.parse('')
+      </script>
 
       <script>
-
         // window.onload = function () {
         //     var markdown = new Reader("mark");
         //     //获取原始文本
@@ -381,366 +379,28 @@
 
         // 每当接收到新数据时，更新页面内容
         eventSource.onmessage = function(event) {
-          console.log("========")
-          let output = event.data.slice(1, -1).replaceAll('\n','<br>');
+          let output = event.data.slice(1, -1)
           let outputDiv = document.getElementById("output");
-          // let outputDivHidden = document.getElementById("output-hidden")
           let outputDivInner = outputDiv.innerHTML
-          console.log("========")
-          console.log("output: " + output)
-          console.log("outputDivInner: " + outputDivInner)
-          
-          outputDiv.innerHTML = outputDivInner + output
+          let hiddenDiv = document.getElementById("output-hidden")
+          let hiddenDivInner = hiddenDiv.innerHTML
+
+          output = output.replace(/\\n/g,'\n');
+
+          hiddenDiv.innerHTML = hiddenDivInner + output
+          outputDiv.innerHTML = marked.parse(hiddenDiv.innerHTML)
           // outputDiv.innerHTML = (outputDivHidden.innerHTML.concat(output)).replaceAll('\n','<br>')
           // outputDivHidden.innerHTML = outputDivHidden.innerHTML.concat(output);
           // outputDiv.innerHTML = outputDivInner.concat(output);
         };
 
       </script>
-      <!-- <p class="lead" style="white-space: pre-line;">
-
-        共性问题1：资源不足导致的扩容/缩容失败  
-        
-        关联工单：  
-        工单6（扩容机型规格库存不足）、工单14（竞价实例配额不足）、工单25（数据均衡因存储不足卡顿）[6][14][25]  
-
-        根因分析：  
-        扩容时未预扣目标规格资源，竞价实例配额管理不足，存储容量不足导致数据均衡效率低。  
-
-        优化方向：  
-        强化资源预扣机制，增加竞价实例动态调度策略，提供存储容量预警及自动扩容建议。  
-        
-        ------------
-        
-        共性问题2：控制台/API功能逻辑缺陷  
-
-        关联工单：  
-        工单2（国际站未接入续费管理页）、工单16（API参数校验缺失）、工单23（页面显示置放群组Bug）、工单27（API与控制台逻辑不一致）[2][16][23][27]  
-
-        根因分析：  
-        功能模块未全量覆盖（如国际站续费管理），API参数校验不完善，页面展示逻辑错误。  
-
-        优化方向：  
-        统一API与控制台逻辑，增加参数校验，完善国际站功能适配，加强前端测试覆盖。  
-        
-        ------------
-        
-        共性问题3：节点健康状态异常  
-
-        关联工单：  
-        工单3（磁盘使用率过高）、工单8（内存不足）、工单10（内存不足导致宕机）、工单21（IO设备使用率过高）[3][8][10][21]  
-
-        根因分析：  
-        资源监控不足，未及时预警或自动处理高负载问题。  
-
-        优化方向：  
-        引入动态资源调整策略（如自动扩容内存/磁盘），优化监控告警阈值及处理建议。  
-        
-        ------------
-        注：报告中[num]标注依据用户提供的工单数据关联性生成，实际来源为工单ID对应的具体问题描述。</p>
-        <div class="table-responsive small">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">共性问题</th>
-                <th scope="col">关联工单</th>
-                <th scope="col">根因</th>
-                <th scope="col">优化方向</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>资源不足导致的扩容/缩容失败</td>
-                <td>6,14,25</td>
-                <td>资源预扣不足、配额管理缺陷</td>
-                <td>预扣机制强化、动态调度策略</td>
-              </tr>
-              <tr>
-                <td>控制台/API功能逻辑缺陷</td>
-                <td>2,16,23,27</td>
-                <td>功能覆盖不全、逻辑校验缺失</td>
-                <td>统一逻辑、增强测试覆盖</td>
-              </tr>
-              <tr>
-                <td>节点健康状态异常</td>
-                <td>3,8,10,21</td>
-                <td>资源监控不足</td>
-                <td>动态资源调整、告警优化</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> -->
     </div>
-
-    <!-- <script>
-      function startSSE(){
-
-        // <div id="sse-box" hx-ext="sse" sse-swap="message">
-        //   Contents of this box will be updated in real time
-        //   with every SSE message received from the chatroom.
-        // </div>
-
-        console.log("sse triggered")
-
-        var sseElement = document.createElement("div")
-        sseElement.setAttribute("sse-connect","/connect")
-        sseElement.setAttribute("hx-ext","sse")
-        sseElement.setAttribute("sse-swap","message")
-        sseElement.innerHTML="哈哈哈"
-        
-        document.getElementById("sse-box").appendChild(sseElement)
-
-      }
-    </script> -->
 
   </div>
 
  
 
-  <!-- <div class="b-example-divider"></div>
-
-  <div class="container">
-    <header class="d-flex justify-content-center py-3">
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-      </ul>
-    </header>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-          <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-        </a>
-      </div>
-
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2">Features</a></li>
-        <li><a href="#" class="nav-link px-2">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2">About</a></li>
-      </ul>
-
-      <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2">Login</button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
-      </div>
-    </header>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <header class="p-3 text-bg-dark">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-        </a>
-
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-        </ul>
-
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-        </form>
-
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="b-example-divider"></div>
-
-  <header class="p-3 mb-3 border-bottom">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-        </a>
-
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
-        </ul>
-
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-
-        <div class="dropdown text-end">
-          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="b-example-divider"></div>
-
-  <header class="py-3 mb-3 border-bottom">
-    <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-      <div class="dropdown">
-        <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        </a>
-        <ul class="dropdown-menu text-small shadow">
-          <li><a class="dropdown-item active" href="#" aria-current="page">Overview</a></li>
-          <li><a class="dropdown-item" href="#">Inventory</a></li>
-          <li><a class="dropdown-item" href="#">Customers</a></li>
-          <li><a class="dropdown-item" href="#">Products</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Reports</a></li>
-          <li><a class="dropdown-item" href="#">Analytics</a></li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center">
-        <form class="w-100 me-3" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-
-        <div class="flex-shrink-0 dropdown">
-          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="container-fluid pb-3">
-    <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
-      <div class="bg-body-tertiary border rounded-3">
-        <br><br><br><br><br><br><br><br><br><br>
-      </div>
-      <div class="bg-body-tertiary border rounded-3">
-        <br><br><br><br><br><br><br><br><br><br>
-      </div>
-    </div>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <nav class="py-2 bg-body-tertiary border-bottom">
-    <div class="container d-flex flex-wrap">
-      <ul class="nav me-auto">
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Features</a></li>
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">FAQs</a></li>
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">About</a></li>
-      </ul>
-      <ul class="nav">
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Login</a></li>
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Sign up</a></li>
-      </ul>
-    </div>
-  </nav>
-  <header class="py-3 mb-4 border-bottom">
-    <div class="container d-flex flex-wrap justify-content-center">
-      <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-4">Double header</span>
-      </a>
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-      </form>
-    </div>
-  </header>
-
-  <div class="b-example-divider"></div>
-
-  <header>
-    <div class="px-3 py-2 text-bg-dark border-bottom">
-      <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-          </a>
-
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-            <li>
-              <a href="#" class="nav-link text-secondary">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#table"/></svg>
-                Orders
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
-                Products
-              </a>
-            </li>
-            <li>
-              <a href="#" class="nav-link text-white">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-                Customers
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="px-3 py-2 border-bottom mb-3">
-      <div class="container d-flex flex-wrap justify-content-center">
-        <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-        </form>
-
-        <div class="text-end">
-          <button type="button" class="btn btn-light text-dark me-2">Login</button>
-          <button type="button" class="btn btn-primary">Sign-up</button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="b-example-divider"></div> -->
 </main>
 <script src="{{ url_for('static', filename='module/module.js') }}"></script>
 <!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->

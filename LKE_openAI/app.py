@@ -12,7 +12,7 @@ import session
 from module.ticketParse import ticket_parse
 from example_sse_coco import call_sse_api
 from example_sse import sse_client
-from module.taiji2 import hunyuan
+from module.taiji2 import hunyuan, moodifyflag, checkflag
 
 app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -99,6 +99,7 @@ def index():
             print("json_prompt:\n" + json_prompt)
 
             # hunyuan(json_prompt)
+            moodifyflag(True)
 
             return render_template('index.html', file_name=file_name, json_data=data), 200
 
@@ -107,11 +108,11 @@ def index():
 
 @app.route('/stream')
 def stream():
-    if json_prompt != "":
+    if json_prompt != "" and checkflag():
         return Response(hunyuan(json_prompt), mimetype="text/event-stream")
     return render_template('index.html', file_name=file_name, json_data=data), 200
 
 
 if __name__ == "__main__":
     session_id = session.get_session()
-    app.run(port=5000, debug=True)
+    app.run(port=5008, debug=True)
