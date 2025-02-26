@@ -48,6 +48,9 @@ json_data = ""
 file_name = ""
 json_prompt = ""
 LLM_output = ""
+prompt_num = 0
+prompt_key = ""
+origin_prompt = ""
 
 ss_url = "http://stream-server-online-openapi.turbotke.production.polaris:8080/openapi/chat/completions"
 model = "Hunyuan-T1-32K"
@@ -68,6 +71,9 @@ def index():
     global file_name
     global data
     global json_prompt
+    global prompt_key
+    global prompt_num
+    global origin_prompt
 
     if request.method == 'POST':
         # file upload
@@ -78,30 +84,35 @@ def index():
 
             json_data, file_name, data = ticket_parse(APP_ROOT, request)
 
-            return render_template('index.html', file_name=file_name, json_data=data), 200
-        elif list(request.form.keys())[0] == 'analysis-button':
-
             prompt_num = len(data)
-            prompt_key = ""
             for key in data[0].keys():
                 prompt_key += key + "，"
             prompt_key = prompt_key[:-1]
 
-            origin_prompt = "假设你是一名腾讯云工程师，以上是2025年至今的EMR产品控制台及流程类问题的工单记录，共计" + str(prompt_num) + "单，他们是json的格式。\n\
-请你根据每个工单的" + prompt_key + "字段，分析并输出以上" + str(prompt_num) + "个工单的共性问题输出报告，报告中每个共性问题应当包含：\n\
-1. 具体单一的共性问题，不要模棱两可\n\
-2. 和本共性问题关联的工单，包含工单的问题和原因\n\
-3. 本共性问题的根因分析\n\
-4. 本共性问题可能的优化方向\n\
-并在回答最后，对报告中包含的多个共性问题进行表格的总结输出。\n"
-            json_prompt = json_data + "\n" + origin_prompt
+            # origin_prompt = "假设你是一名腾讯云工程师，以上是2025年至今的EMR产品控制台及流程类问题的工单记录，共计" + str(prompt_num) + "单，他们是json的格式。\n\
+            # 请你根据每个工单的" + prompt_key + "字段，分析并输出以上" + str(prompt_num) + "个工单的共性问题输出报告，报告中每个共性问题应当包含：\n\
+            # 1. 具体单一的共性问题，不要模棱两可\n\
+            # 2. 和本共性问题关联的工单，包含工单的问题和原因\n\
+            # 3. 本共性问题的根因分析\n\
+            # 4. 本共性问题可能的优化方向\n\
+            # 并在回答最后，对报告中包含的多个共性问题进行表格的总结输出。\n"
+            # json_prompt = json_data + "\n" + origin_prompt
             # json_prompt = origin_prompt
             print("json_prompt:\n" + json_prompt)
 
-            # hunyuan(json_prompt)
+
+            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt), 200
+        elif list(request.form.keys())[0] == 'analysis-button':
+
+            print(request.form['analysis-button'])
+
+            origin_prompt = request.form['analysis-button']
+
+            json_prompt = json_data + "\n" + origin_prompt
+
             moodifyflag(True)
 
-            return render_template('index.html', file_name=file_name, json_data=data), 200
+            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt), 200
 
     return render_template('index.html', json_data="")
 
@@ -110,7 +121,7 @@ def index():
 def stream():
     if json_prompt != "" and checkflag():
         return Response(hunyuan(json_prompt), mimetype="text/event-stream")
-    return render_template('index.html', file_name=file_name, json_data=data), 200
+    return render_template('index.html', file_name=file_name, json_data=data, origin_prompt=origin_prompt), 200
 
 
 if __name__ == "__main__":

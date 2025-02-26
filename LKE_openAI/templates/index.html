@@ -251,7 +251,7 @@
     <br/>
 
     <h2>2. 工单列表</h2>
-    <h3>{{ file_name }}</h3>
+    <h3 id="fileName">{{ file_name }}</h3>
     <!-- <h2>{{ json_data }}</h2> -->
 
 
@@ -329,12 +329,48 @@
         promptB
       </button>
     </div>
+    <br/>
+    <div id="textArea" class="form-floating mb-3" hidden>
+      <textarea class="form-control" id="floatingTextarea2" style="height: 300px">
+      </textarea>
+      <label for="floatingTextarea2">Prompt</label>
+    </div>
 
 
     <br/>
     <label for="formFileLg" class="form-label"><b>step2：分析控制</b></label>
-    <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit">开始分析</button></p>
+    <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit" onclick="submitPrompt()">开始分析</button></p>
     </form>
+    <script>
+      // promptNow = document.getElementById("floatingTextarea2").value
+      promptNow = '{{ origin_prompt }}'
+      promptA = "假设你是一名腾讯云工程师，以上是2025年至今的EMR产品控制台及流程类问题的工单记录，共计" + '{{ prompt_num }}' + "单，他们是json的格式。\n\
+请你根据每个工单的" + '{{ prompt_key }}' + "字段，分析并输出以上" + '{{ prompt_num }}' + "个工单的共性问题输出报告，报告中每个共性问题应当包含：\n\
+1. 具体单一的共性问题，不要模棱两可\n\
+2. 和本共性问题关联的工单，包含工单的问题和原因\n\
+3. 本共性问题的根因分析\n\
+4. 本共性问题可能的优化方向\n\
+并在回答最后，对报告中包含的多个共性问题进行表格的总结输出。"
+
+      if (/^ *$/.test(promptNow)){
+        document.getElementById("floatingTextarea2").value = promptA
+      } else if (promptA != promptNow){
+        document.getElementById("floatingTextarea2").value = promptNow
+      }
+      // if (promptA != promptNow) {
+      //   document.getElementById("floatingTextarea2").value = promptNow
+      // } else {
+      //   document.getElementById("floatingTextarea2").value = promptA
+      // }
+      if (document.getElementById("fileName").innerHTML != "") {
+        document.getElementById("textArea").hidden = false
+      }
+
+      function submitPrompt() {
+        prompt = document.getElementById("floatingTextarea2").value
+        document.getElementById("analysis-button").value = prompt
+      }
+    </script>
 
     <!-- <p><button id="analysis-button222" name="analysis-button" class="btn btn-primary" type="submit" onclick="startSSE()">开始分析</button></p> -->
 
