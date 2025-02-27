@@ -20,7 +20,8 @@ enable_stream = True
 headers = {
     "Content-Type": "application/json",
     "Authorization": "0c370ac1-ba61-4b86-940a-f0ea8c05c680",
-    # "Authorization": "Bearer 7auGXNATFSKl7dF",
+    # zhengchi "Authorization": "d01bd952-3652-401a-a266-417c86750cfe",
+    # official "Authorization": "Bearer 7auGXNATFSKl7dF",
     "Wsid": wsid,
 }
 

@@ -309,24 +309,27 @@
         DeepSeek-R1-671b
       </button>
       <button class="btn btn-secondary d-inline-flex" type="button">
-        promptA
+        Prompt1
       </button>
       <button class="btn btn-outline-secondary d-inline-flex" type="button">
-        promptB
+        Prompt2
       </button>
       <button class="btn btn-outline-secondary d-inline-flex" type="button">
-        promptC
+        Prompt3
       </button>
     </div>
     <div class="d-flex gap-2 py-1">
       <button class="btn btn-success d-inline-flex" type="button">
-        hunyuan-turbo
+        Hunyuan-t1
       </button>
       <button class="btn btn-outline-secondary d-inline-flex" type="button">
-        promptA
+        Prompt1
       </button>
       <button class="btn btn-outline-secondary d-inline-flex" type="button">
-        promptB
+        Prompt2
+      </button>
+      <button class="btn btn-outline-secondary d-inline-flex" type="button">
+        Prompt3
       </button>
     </div>
     <br/>
@@ -335,26 +338,28 @@
       </textarea>
       <label for="floatingTextarea2">Prompt</label>
     </div>
-
-
-    <br/>
-    <label for="formFileLg" class="form-label"><b>step2：分析控制</b></label>
-    <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit" onclick="submitPrompt()">开始分析</button></p>
-    </form>
     <script>
-      // promptNow = document.getElementById("floatingTextarea2").value
-      promptNow = '{{ origin_prompt }}'
-      promptA = "假设你是一名腾讯云工程师，以上是2025年至今的EMR产品控制台及流程类问题的工单记录，共计" + '{{ prompt_num }}' + "单，他们是json的格式。\n\
-请你根据每个工单的" + '{{ prompt_key }}' + "字段，分析并输出以上" + '{{ prompt_num }}' + "个工单的共性问题输出报告，报告中每个共性问题应当包含：\n\
-1. 具体单一的共性问题，不要模棱两可\n\
-2. 和本共性问题关联的工单，包含工单的问题和原因\n\
-3. 本共性问题的根因分析\n\
-4. 本共性问题可能的优化方向\n\
-并在回答最后，对报告中包含的多个共性问题进行表格的总结输出。"
+      promptNow = `{{ origin_prompt }}`
+      console.log("以下是promptNow")
+      console.log(promptNow)
+    promptA = "假设你是一名腾讯云工程师,以上是2025年至今的EMR产品控制台及流程类问题的工单记录.共计" + '{{ prompt_num }}' + "单,他们是json的格式\n" +
+"请你根据每个工单的" + '{{ prompt_key }}' + "字段,分析并输出以上" + '{{ prompt_num }}' + "个工单的共性问题输出报告,报告中每个共性问题应当包含如下细节：\n" + 
+"1. 具体单一的共性问题,不要模棱两可\n" + 
+"2. 和本共性问题关联的工单,包含工单的问题和原因\n" +
+"3. 本共性问题的根因分析\n" + 
+"4. 本共性问题可能的优化方向\n" +
+"并在回答最后,对报告中包含的多个共性问题进行表格的总结输出。"
+      console.log("以下是promptA")
+      console.log(promptA)
+      if (promptA == promptNow) {
+        console.log("promptA == promptNow")
+      }
 
       if (/^ *$/.test(promptNow)){
         document.getElementById("floatingTextarea2").value = promptA
       } else if (promptA != promptNow){
+        document.getElementById("floatingTextarea2").value = promptNow
+      } else {
         document.getElementById("floatingTextarea2").value = promptNow
       }
       // if (promptA != promptNow) {
@@ -362,6 +367,7 @@
       // } else {
       //   document.getElementById("floatingTextarea2").value = promptA
       // }
+
       if (document.getElementById("fileName").innerHTML != "") {
         document.getElementById("textArea").hidden = false
       }
@@ -371,6 +377,13 @@
         document.getElementById("analysis-button").value = prompt
       }
     </script>
+
+
+    <br/>
+    <label for="formFileLg" class="form-label"><b>step2：分析控制</b></label>
+    <p><button id="analysis-button" name="analysis-button" class="btn btn-primary" type="submit" onclick="submitPrompt()">开始分析</button></p>
+    </form>
+    
 
     <!-- <p><button id="analysis-button222" name="analysis-button" class="btn btn-primary" type="submit" onclick="startSSE()">开始分析</button></p> -->
 
@@ -389,7 +402,7 @@
       <div id="preview"></div> -->
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
       <script>
-        document.getElementById("output").innerHTML = marked.parse('# Marked in browser\n\nRendered by **marked**.')
+        document.getElementById("output").innerHTML = marked.parse('上传工单后，点击「开始分析」按钮来发起智能分析。')
         document.getElementById("output1").innerHTML = marked.parse('')
       </script>
 

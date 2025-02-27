@@ -78,7 +78,7 @@ def index():
     if request.method == 'POST':
         # file upload
 
-        print(request.form.keys())
+        print("button pressed: " + list(request.form.keys())[0])
 
         if list(request.form.keys())[0] == 'file-upload-button' and len(list(request.files)):
 
@@ -86,7 +86,7 @@ def index():
 
             prompt_num = len(data)
             for key in data[0].keys():
-                prompt_key += key + "，"
+                prompt_key += key + ","
             prompt_key = prompt_key[:-1]
 
             # origin_prompt = "假设你是一名腾讯云工程师，以上是2025年至今的EMR产品控制台及流程类问题的工单记录，共计" + str(prompt_num) + "单，他们是json的格式。\n\
@@ -98,15 +98,13 @@ def index():
             # 并在回答最后，对报告中包含的多个共性问题进行表格的总结输出。\n"
             # json_prompt = json_data + "\n" + origin_prompt
             # json_prompt = origin_prompt
-            print("json_prompt:\n" + json_prompt)
 
 
             return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt), 200
         elif list(request.form.keys())[0] == 'analysis-button':
 
-            print(request.form['analysis-button'])
-
             origin_prompt = request.form['analysis-button']
+            print(origin_prompt)
 
             json_prompt = json_data + "\n" + origin_prompt
 
