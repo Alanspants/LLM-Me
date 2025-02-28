@@ -51,6 +51,7 @@ LLM_output = ""
 prompt_num = 0
 prompt_key = ""
 origin_prompt = ""
+prompt_kind = 1
 
 ss_url = "http://stream-server-online-openapi.turbotke.production.polaris:8080/openapi/chat/completions"
 model = "Hunyuan-T1-32K"
@@ -74,6 +75,7 @@ def index():
     global prompt_key
     global prompt_num
     global origin_prompt
+    global prompt_kind
 
     if request.method == 'POST':
         # file upload
@@ -100,17 +102,21 @@ def index():
             # json_prompt = origin_prompt
 
 
-            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt), 200
+            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt, prompt_kind=prompt_kind), 200
         elif list(request.form.keys())[0] == 'analysis-button':
 
             origin_prompt = request.form['analysis-button']
-            print(origin_prompt)
+            print("origin_prompt:\n" + origin_prompt)
+
+            # 获取origin_prompt的第一个字符，来确定按钮，再删除第一个字符
+            prompt_kind = origin_prompt[0]
+            origin_prompt = origin_prompt[1:]
 
             json_prompt = json_data + "\n" + origin_prompt
 
             moodifyflag(True)
 
-            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt), 200
+            return render_template('index.html', file_name=file_name, json_data=data, prompt_num=str(prompt_num), prompt_key=prompt_key, origin_prompt=origin_prompt, prompt_kind=prompt_kind), 200
 
     return render_template('index.html', json_data="")
 
@@ -119,7 +125,7 @@ def index():
 def stream():
     if json_prompt != "" and checkflag():
         return Response(hunyuan(json_prompt), mimetype="text/event-stream")
-    return render_template('index.html', file_name=file_name, json_data=data, origin_prompt=origin_prompt), 200
+    return render_template('index.html', file_name=file_name, json_data=data, origin_prompt=origin_prompt, prompt_kind=prompt_kind), 200
 
 
 if __name__ == "__main__":
